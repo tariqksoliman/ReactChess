@@ -8,6 +8,13 @@
   * Silver - Under 12 hrs
   * Bronze - Under 24 hrs
 
+  * ##### So far
+    * 4 hours:
+      * Main code structure
+      * Checkered 8x8 board
+      * Ability to select pieces
+      * Selecting pawns show possible movements
+
 * #### Requirements
   * Must:
     * An 8x8 board with lettering and numbering
