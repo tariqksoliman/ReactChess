@@ -1,6 +1,7 @@
 {
   "name": "react-chess",
   "version": "0.1.0",
+  "homepage": "https://tariqksoliman.github.io/ReactChess/",
   "private": true,
   "dependencies": {
     "react": "^15.5.4",

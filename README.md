@@ -3,6 +3,8 @@
 ## Challenge!
 ### Write a simple chess program using ReactJS within a certain time
 
+### [Demo (so far)](https://tariqksoliman.github.io/ReactChess/)
+
 * #### Times (actual programming time and not time elapsed since beginning)
   * Gold   - Under 6 hrs 
   * Silver - Under 12 hrs
@@ -14,6 +16,12 @@
       * Checkered 8x8 board
       * Ability to select pieces
       * Selecting pawns show possible movements
+    * 4 hours:
+      * All pieces move basically
+      * Castling
+      * Turns
+      * Nice looking board
+
 
 * #### Requirements
   * Must:
