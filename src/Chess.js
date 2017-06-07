@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import './Chess.css';
-import pieceMovements from './ChessMoves.js'
+import ChessMoves from './ChessMoves.js'
 
 class Chess extends Component {
-  render() {
-    return (
-      <div className='chess'>
-        <Board/>
-      </div>
-    );
-  }
-}
-
-class Board extends Component {
   constructor() {
     super();
+    this.ChessMoves = new ChessMoves();
     this.state = {
       layout: this.getInitialBoardLayout(),
       whitesTurn: true,
       chosen: [ null, null ],
-      //chosen: Array.from({length: 8}, () => Array.from({length: 8}, () => false) ),
-      possible: Array.from({length: 8}, () => Array.from({length: 8}, () => false) )
+      possible: Array.from({length: 8}, () => Array.from({length: 8}, () => false) ),
+      messageTurn: "White's Turn",
+      messageState: '',
+      capturedPieces: [],
+      algebraicNotation: []
     }
   }
 
@@ -38,13 +32,27 @@ class Board extends Component {
            ];
   }
 
+  setMessageTurn( whitesTurn ) {
+    this.setState({ 
+      messageTurn: ( whitesTurn ) ? "White's Turn" : "Red's Turn"
+    });
+    //change background color
+    document.body.className = ( whitesTurn ) ? 'whitesTurn' : 'redsTurn';
+  }
+  setMessageState( message ) {
+    this.setState({ messageState: message });
+  }
+  addAlgebraicNotation(){}
+  addCapturedPiece(){}
+  promotePawn(){}
+
   handleClick( x, y ) {
 
-    const layout = this.state.layout.slice();
-    var whitesTurn = this.state.whitesTurn;
-    var chosen = [ null, null ];
+    let layout = JSON.parse( JSON.stringify( this.state.layout ) );
+    let whitesTurn = this.state.whitesTurn;
+    let chosen = [ null, null ];
     const possible = Array.from({length: 8}, () => Array.from({length: 8}, () => false));
-    const movements = pieceMovements( x, y, this.state.layout ) || [];
+    const movements = this.ChessMoves.pieceMovements( x, y, this.state.layout ) || [];
 
     //if you click your piece
     if( ( whitesTurn && this.state.layout[y][x][0] === 'w' ) ||
@@ -53,6 +61,10 @@ class Board extends Component {
       for( let i = 0; i < movements.length; i++ ) {
         possible[ movements[i][1] ][ movements[i][0] ] = true;
       }
+      this.setState({
+          chosen: chosen,
+          possible: possible
+      });
     }
     //or if you click a place to move
     else if( this.state.possible[y][x] ) {
@@ -72,16 +84,60 @@ class Board extends Component {
       layout[y][x] = this.state.layout[ this.state.chosen[1] ][ this.state.chosen[0] ].substring( 0, 2 );
       layout[ this.state.chosen[1] ][ this.state.chosen[0] ] = '';
 
-      whitesTurn = !whitesTurn;
-      document.body.className = ( whitesTurn ) ? 'whitesTurn' : 'redsTurn';
-    }
+      let checks = this.ChessMoves.checkForChecks( layout );
 
-    this.setState({
-      layout: layout,
-      whitesTurn: whitesTurn,
-      chosen: chosen,
-      possible: possible
-    });
+      let whosChecked = null;
+      if( checks.whiteChecked && whitesTurn )
+        whosChecked = 'White will be in Check';
+      else if( checks.redChecked && !whitesTurn )
+        whosChecked = 'Red will be in Check';
+      this.setMessageState( whosChecked );
+
+      //No checking yourself or leaving yourself checked
+      if( ( whitesTurn && !checks.whiteChecked ) ||
+          ( !whitesTurn && !checks.redChecked ) ) {
+        //switch the turn
+        whitesTurn = !whitesTurn;
+        this.setMessageTurn( whitesTurn );
+        //Update
+        this.setState({
+          layout: layout,
+          whitesTurn: whitesTurn,
+          chosen: chosen,
+          possible: possible
+        });
+      }
+        if( whosChecked === null ) {
+        checks = this.ChessMoves.checkForChecks( layout );
+        if( checks.whiteChecked && whitesTurn )
+          whosChecked = 'White in Check';
+        else if( checks.redChecked && !whitesTurn )
+          whosChecked = 'Red in Check';
+        this.setMessageState( whosChecked );
+      }
+    }
+  }
+
+  render() {
+    return (
+      <div className='chess'>
+        <div id='chess-message-turn'>{this.state.messageTurn}</div>
+        <Board
+          layout = {this.state.layout}
+          chosen = {this.state.chosen}
+          possible = {this.state.possible}
+          onClick = {( x, y ) => this.handleClick( x, y )}
+        />
+        <div id='chess-message-state'>{this.state.messageState}</div>
+      </div>
+    );
+  }
+}
+
+class Board extends Component {
+
+  handleBoardClick( x, y ) {
+    this.props.onClick( x, y );
   }
 
   makeSquare( x, y ) {
@@ -91,8 +147,8 @@ class Board extends Component {
       return classes;
     }
 
-    const chosen = ( x === this.state.chosen[0] &&
-                     y === this.state.chosen[1] ) ? true : false;
+    const chosen = ( x === this.props.chosen[0] &&
+                     y === this.props.chosen[1] ) ? true : false;
     
     return (
       <Square
@@ -100,10 +156,10 @@ class Board extends Component {
         posX = { x }
         posY = { y }
         classes = {getClasses()}
-        piece = {this.state.layout[y][x]}
+        piece = {this.props.layout[y][x]}
         chosen = {chosen}
-        possible = {this.state.possible[y][x]}
-        onClick={() => this.handleClick( x, y )}
+        possible = {this.props.possible[y][x]}
+        onClick={() => this.handleBoardClick( x, y )}
       />
     );
   }
