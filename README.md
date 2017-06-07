@@ -21,7 +21,10 @@
       * Castling
       * Turns
       * Nice looking board
-
+    * 3 hours:
+      * Checks for checks
+      * Turn and check messages
+      * Visual update
 
 * #### Requirements
   * Must:
