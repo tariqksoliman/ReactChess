@@ -6,23 +6,52 @@
 .chess {
   width: 100vw;
   height: 100vh;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
 }
 
 #chess-message-turn {
-  height: 20vh;
-  line-height: 20vh;
+  height: 14vh;
+  line-height: 14vh;
   text-align: center;
   font-family: "OptimusPrinceps";
   font-size: 6vh;
+  color: #eee;
+}
+
+#chess-captures-white {
+  height: 6vh;
+  line-height: 6vh;
+  text-align: center;
+  font-family: "chessfont";
+  font-size: 3vh;
+  color: #eee;
+  opacity: 0.75;
+}
+
+#chess-captures-red {
+  margin-top: 60vh;
+  height: 6vh;
+  line-height: 6vh;
+  text-align: center;
+  font-family: "chessfont";
+  font-size: 3vh;
+  color: #993232;
+  opacity: 0.75;
 }
 
 #chess-message-state {
-  margin-top: 60vh;
-  height: 20vh;
-  line-height: 20vh;
+  height: 14vh;
+  line-height: 14vh;
   text-align: center;
   font-family: "OptimusPrinceps";
   font-size: 6vh;
+  color: #eee;
 }
 
 .board {

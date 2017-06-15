@@ -13,7 +13,7 @@ class Chess extends Component {
       possible: Array.from({length: 8}, () => Array.from({length: 8}, () => false) ),
       messageTurn: "White's Turn",
       messageState: '',
-      capturedPieces: [],
+      capturedPieces: { 'w': [], 'r': [] },
       algebraicNotation: []
     }
   }
@@ -43,8 +43,16 @@ class Chess extends Component {
     this.setState({ messageState: message });
   }
   addAlgebraicNotation(){}
-  addCapturedPiece(){}
-  promotePawn(){}
+  addCapturedPiece( piece ) {
+    if( piece !== '' && ( piece[0] === 'w' || piece[0] === 'r' ) ) {
+      let capturedPieces = JSON.parse( JSON.stringify( this.state.capturedPieces ) );
+      capturedPieces[ piece[0] ].push( piece[1] );
+      this.setState( { capturedPieces: capturedPieces } );
+    }
+  }
+  promotePawn( ){
+
+  }
 
   handleClick( x, y ) {
 
@@ -80,6 +88,9 @@ class Chess extends Component {
         }
       }
 
+      //
+      //piece that might get covered up/lost/captured
+      const capturedPiece = layout[y][x];
       //substr02 to remove hasnt moved underscore indicator
       layout[y][x] = this.state.layout[ this.state.chosen[1] ][ this.state.chosen[0] ].substring( 0, 2 );
       layout[ this.state.chosen[1] ][ this.state.chosen[0] ] = '';
@@ -96,9 +107,11 @@ class Chess extends Component {
       //No checking yourself or leaving yourself checked
       if( ( whitesTurn && !checks.whiteChecked ) ||
           ( !whitesTurn && !checks.redChecked ) ) {
+        //So definitely a valid move has occured
         //switch the turn
         whitesTurn = !whitesTurn;
         this.setMessageTurn( whitesTurn );
+        this.addCapturedPiece( capturedPiece );
         //Update
         this.setState({
           layout: layout,
@@ -119,15 +132,18 @@ class Chess extends Component {
   }
 
   render() {
+
     return (
       <div className='chess'>
         <div id='chess-message-turn'>{this.state.messageTurn}</div>
+        <div id='chess-captures-white'>{ mapTypeArrayToPieceCodes( this.state.capturedPieces.w ) }</div>
         <Board
           layout = {this.state.layout}
           chosen = {this.state.chosen}
           possible = {this.state.possible}
           onClick = {( x, y ) => this.handleClick( x, y )}
         />
+        <div id='chess-captures-red'>{ mapTypeArrayToPieceCodes( this.state.capturedPieces.r ) }</div>
         <div id='chess-message-state'>{this.state.messageState}</div>
       </div>
     );
@@ -202,16 +218,6 @@ class Piece extends Component {
       this.props.onClick();
   }
 
-  mapTypeToPieceCode( type, side ) {
-    if( type === 'P' ) return 'o';
-    if( type === 'R' ) return 't';
-    if( type === 'N' ) return 'j';
-    if( type === 'B' ) return 'n';
-    if( type === 'Q' ) return 'w';
-    if( type === 'K' ) return 'l';
-    return '';
-  }
-
   render() {
     const chosen = this.props.chosen ? ' chosen' : '';
     const possible = this.props.possible ? ' possible' : '';
@@ -222,10 +228,29 @@ class Piece extends Component {
       <div className={ 'piece' + side + type + chosen + possible + active }
            onClick={() => this.handlePieceClick( ) }
       >
-        {this.mapTypeToPieceCode( type[1], side[1] )}
+        {mapTypeToPieceCode( type[1] )}
       </div>
     );
   }
+}
+
+////////////
+//Other functions
+function mapTypeToPieceCode( type ) {
+  if( type === 'P' ) return 'o';
+  if( type === 'R' ) return 't';
+  if( type === 'N' ) return 'j';
+  if( type === 'B' ) return 'n';
+  if( type === 'Q' ) return 'w';
+  if( type === 'K' ) return 'l';
+  return '';
+}
+function mapTypeArrayToPieceCodes( typeArray ) {
+  let pieceCodes = '';
+  for( let i = 0; i < typeArray.length; i++ ) {
+    pieceCodes += mapTypeToPieceCode( typeArray[i] );
+  }
+  return pieceCodes;
 }
 
 export default Chess;

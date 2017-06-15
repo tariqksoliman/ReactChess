@@ -25,6 +25,8 @@
       * Checks for checks
       * Turn and check messages
       * Visual update
+    * 1 hour:
+      * Displays captured pieces
 
 * #### Requirements
   * Must:
