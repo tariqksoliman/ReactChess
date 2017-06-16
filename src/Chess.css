@@ -24,25 +24,26 @@
   color: #eee;
 }
 
-#chess-captures-white {
+#chess-captures-w {
+  width: calc( 60vh + 12px );
   height: 6vh;
   line-height: 6vh;
   text-align: center;
   font-family: "chessfont";
   font-size: 3vh;
   color: #eee;
-  opacity: 0.75;
+  margin: auto;
 }
 
-#chess-captures-red {
-  margin-top: 60vh;
+#chess-captures-r {
+  margin: 60vh auto auto auto;
+  width: calc( 60vh + 12px );
   height: 6vh;
   line-height: 6vh;
   text-align: center;
   font-family: "chessfont";
   font-size: 3vh;
   color: #993232;
-  opacity: 0.75;
 }
 
 #chess-message-state {
@@ -94,6 +95,7 @@
   font-size: 6.5vh;
   line-height: 7.5vh;
   font-family: 'chessfont';
+  transition: all 0.5s ease;
 }
 .piece.active {
   cursor: pointer;
@@ -116,4 +118,33 @@
 .piece.r {
   color: 	#993232;
   text-shadow: 0px 0px 8px #bbb;
+}
+
+.piece-promo div {
+  width: 3.75vh;
+  height: 3.75vh;
+  margin: 0;
+  font-size: 3.25vh;
+  font-family: "chessfont";
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.piece-promo div:hover {
+  background-color:	rgba(0, 115, 153, 0.85);
+}
+.piece-promo.w {
+  color: #eee;
+  text-shadow: 0px 0px 8px black;
+}
+.piece-promo.r {
+  color: 	#993232;
+  text-shadow: 0px 0px 8px #bbb;
+}
+
+.chess-captures-piece {
+  display: inline;
+  cursor: pointer;
+  opacity: 0.75;
 }

@@ -27,22 +27,26 @@
       * Visual update
     * 1 hour:
       * Displays captured pieces
+    * 2 hours:
+      * Pawn promotion
+      * Can, as always, restart game by refreshing page
 
 * #### Requirements
   * Must:
-    * An 8x8 board with lettering and numbering
-    * User(s) play(s) both sides (No AI)
-    * Displays full chess algebraic notation
-    * Selecting a piece shows all possible places to move
-    * Must have castling
-    * Must be able to promote pieces and select which ones to
-    * Must identify checks, checkmates and stalemates
-    * Display captured pieces
-    * Be able to draw the game/new game
-    * Any obvious things I missed (such as: pieces are to be two and only two different colors)
+    * [X] An 8x8 board with lettering and numbering
+    * [X] User(s) play(s) both sides (No AI)
+    * [_] Displays full chess algebraic notation
+    * [X] Selecting a piece shows all possible places to move
+    * [X] Must have castling
+    * [X] Must be able to promote pieces and select which ones to
+    * [X] Must identify checks (though it misses only the message if a promoted pawn checks )
+    * [X] Display captured pieces
+    * [X] Be able to draw the game/new game
+    * [X] Any obvious things I missed (such as: pieces are to be two and only two different colors)
   * Optional:
-    * En passant
-    * That it look nice
-    * Identify draws
-    * Move timers
-    * Navigate through past moves
+    * [_] En passant
+    * [X] That it look nice
+    * [_] Move timers
+    * [_] Navigate through past moves
+    * [_] Identify checkmates
+    * [_] Identify stalemates
